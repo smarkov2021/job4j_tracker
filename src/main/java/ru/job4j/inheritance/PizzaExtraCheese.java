@@ -7,7 +7,6 @@ public class PizzaExtraCheese extends Pizza {
 
     @Override
     public String name() {
-        Pizza hutt = new Pizza();
-        return hutt.name() + " + extra cheese";
+        return super.name() + " + extra cheese";
     }
 }
