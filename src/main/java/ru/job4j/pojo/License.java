@@ -5,7 +5,6 @@ import java.util.Objects;
 
 public class License {
     private String owner;
-
     private String model;
     private String code;
     private Date created;
