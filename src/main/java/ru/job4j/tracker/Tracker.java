@@ -23,15 +23,11 @@ public class Tracker {
                 count++;
             }
         }
-        rsl = Arrays.copyOf(rsl, count);
-        return rsl;
+        return  Arrays.copyOf(rsl, count);
     }
 
     public Item[] findAll() {
-        Item[] rsl = new Item[items.length];
-        rsl = items;
-        rsl = Arrays.copyOf(rsl, size);
-        return rsl;
+        return Arrays.copyOf(items, size);
     }
 
     private int indexOf(int id) {
