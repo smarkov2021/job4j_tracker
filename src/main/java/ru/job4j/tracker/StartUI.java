@@ -25,8 +25,7 @@ public class StartUI {
                 } else {
                     System.out.println("Хранилище еще не содержит заявок");
                 }
-            } else
-                if (select == 2) {
+            } else if (select == 2) {
                 System.out.println("=== Edit item ===");
                 System.out.print("Enter id: ");
                 int id = Integer.parseInt(scanner.nextLine());
