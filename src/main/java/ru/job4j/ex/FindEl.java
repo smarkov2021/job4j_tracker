@@ -15,6 +15,15 @@ public class FindEl {
         return rsl;
     }
 
+    public static boolean sent(String value, String[] abuses) throws ElementAbuseException {
+        for (int i = 0; i < abuses.length; i++) {
+                if (abuses[i].equals(value)) {
+                    throw new ElementAbuseException("");
+                }
+            }
+        return true;
+    }
+
     public static void main(String[] args) {
         String[] value = {"test1", "test2", "test3", "test4"};
         String key = "test5";
