@@ -33,9 +33,12 @@ public class ValidateInputTest {
         Input in = new StubInput(
                 new String[] {"1", "2", "3"}
         );
+        int[] expected = new int[] {1, 2, 3};
         ValidateInput input = new ValidateInput(out, in);
-        int selected = input.askInt("Enter menu:");
-        assertThat(selected).isEqualTo(1);
+        for (int i = 0; i < expected.length; i++) {
+            int selected = input.askInt("Enter menu:");
+            assertThat(selected).isEqualTo(expected[i]);
+        }
     }
 
     @Test
