@@ -43,8 +43,8 @@ public class PasswordValidator {
 
     public static boolean checkForbiddenCase(String password) {
         String[] words = new String[]{"qwerty", "12345", "password", "admin", "user"};
-        for (int index = 0; index < words.length; index++) {
-            if (password.toLowerCase().contains(words[index].toLowerCase())) {
+        for (String word : words) {
+            if (password.toLowerCase().contains(word.toLowerCase())) {
                 return true;
             }
         }
