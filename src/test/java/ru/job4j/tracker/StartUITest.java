@@ -16,7 +16,7 @@ public class StartUITest {
                 new String[] {"0", "Item name", "1"}
         );
         Tracker tracker = new Tracker();
-        UserAction[] acts = { new CreateAction(out), new ExitAction(out)};
+        UserAction[] acts = {new CreateAction(out), new ExitAction(out)};
         List<UserAction> actions  = Arrays.asList(acts);
         new StartUI(out).init(in, tracker, actions);
         assertThat(tracker.findAll().get(0).getName()).isEqualTo("Item name");
@@ -31,7 +31,7 @@ public class StartUITest {
         Input in = new StubInput(
                 new String[] {"0", String.valueOf(item.getId()), replacedName, "1"}
         );
-        UserAction[] acts = { new ReplaceAction(out), new ExitAction(out)};
+        UserAction[] acts = {new ReplaceAction(out), new ExitAction(out)};
         List<UserAction> actions  = Arrays.asList(acts);
         new StartUI(out).init(in, tracker, actions);
         assertThat(tracker.findById(item.getId()).getName()).isEqualTo(replacedName);
@@ -45,7 +45,7 @@ public class StartUITest {
         Input in = new StubInput(
                 new String[] {"0", String.valueOf(item.getId()), "1"}
         );
-        UserAction[] acts = { new DeleteAction(out), new ExitAction(out)};
+        UserAction[] acts = {new DeleteAction(out), new ExitAction(out)};
         List<UserAction> actions  = Arrays.asList(acts);
         new StartUI(out).init(in, tracker, actions);
         assertThat(tracker.findById(item.getId())).isNull();
@@ -60,7 +60,7 @@ public class StartUITest {
         Input in = new StubInput(
                 new String[] {"0", String.valueOf(one.getId()), replaceName, "1"}
         );
-        UserAction[] acts = { new ReplaceAction(out), new ExitAction(out)};
+        UserAction[] acts = {new ReplaceAction(out), new ExitAction(out)};
         List<UserAction> actions  = Arrays.asList(acts);
         new StartUI(out).init(in, tracker, actions);
         String ln = System.lineSeparator();
@@ -85,7 +85,7 @@ public class StartUITest {
         Input in = new StubInput(
                 new String[] {"0", "1"}
         );
-        UserAction[] acts = { new ShowAction(out), new ExitAction(out)};
+        UserAction[] acts = {new ShowAction(out), new ExitAction(out)};
         List<UserAction> actions  = Arrays.asList(acts);
         new StartUI(out).init(in, tracker, actions);
         String ln = System.lineSeparator();
@@ -108,7 +108,7 @@ public class StartUITest {
         Input in = new StubInput(
                 new String[] {"0", "1"}
         );
-        UserAction[] acts = { new ShowAction(out), new ExitAction(out)};
+        UserAction[] acts = {new ShowAction(out), new ExitAction(out)};
         List<UserAction> actions  = Arrays.asList(acts);
         new StartUI(out).init(in, tracker, actions);
         String ln = System.lineSeparator();
@@ -132,7 +132,7 @@ public class StartUITest {
         Input in = new StubInput(
                 new String[] {"0", "test1", "1"}
         );
-        UserAction[] acts = { new FindByNameAction(out), new ExitAction(out)};
+        UserAction[] acts = {new FindByNameAction(out), new ExitAction(out)};
         List<UserAction> actions  = Arrays.asList(acts);
         new StartUI(out).init(in, tracker, actions);
         String ln = System.lineSeparator();
@@ -157,7 +157,7 @@ public class StartUITest {
         Input in = new StubInput(
                 new String[] {"0", "test", "1"}
         );
-        UserAction[] acts = { new FindByNameAction(out), new ExitAction(out)};
+        UserAction[] acts = {new FindByNameAction(out), new ExitAction(out)};
         List<UserAction> actions  = Arrays.asList(acts);
         new StartUI(out).init(in, tracker, actions);
         String ln = System.lineSeparator();
@@ -182,7 +182,7 @@ public class StartUITest {
         Input in = new StubInput(
                 new String[] {"0",  String.valueOf(one.getId()), "1"}
         );
-        UserAction[] acts = { new FindByIdAction(out), new ExitAction(out)};
+        UserAction[] acts = {new FindByIdAction(out), new ExitAction(out)};
         List<UserAction> actions  = Arrays.asList(acts);
         new StartUI(out).init(in, tracker, actions);
         String ln = System.lineSeparator();
@@ -207,7 +207,7 @@ public class StartUITest {
         Input in = new StubInput(
                 new String[] {"0",  String.valueOf(one.getId() + 1), "1"}
         );
-        UserAction[] acts = { new FindByIdAction(out), new ExitAction(out)};
+        UserAction[] acts = {new FindByIdAction(out), new ExitAction(out)};
         List<UserAction> actions  = Arrays.asList(acts);
         new StartUI(out).init(in, tracker, actions);
         String ln = System.lineSeparator();
