@@ -35,11 +35,8 @@ public class AnalyzeByMap {
         int count = 0;
         for (Pupil pup : pupils) {
             for (Subject subj : pup.subjects()) {
-                if (linkedHashMap.get(subj.name()) != null) {
-                    linkedHashMap.put(subj.name(), linkedHashMap.get(subj.name()) + subj.score());
-                } else {
-                    linkedHashMap.put(subj.name(), subj.score());
-                }
+                    linkedHashMap.put(subj.name(), linkedHashMap.getOrDefault(
+                            subj.name(), 0) + subj.score());
             }
             count++;
         }
@@ -69,11 +66,8 @@ public class AnalyzeByMap {
         ArrayList<Label> averageScores = new ArrayList<>();
         for (Pupil pup : pupils) {
             for (Subject subj : pup.subjects()) {
-                if (linkedHashMap.get(subj.name()) != null) {
-                    linkedHashMap.put(subj.name(), linkedHashMap.get(subj.name()) + subj.score());
-                } else {
-                    linkedHashMap.put(subj.name(), subj.score());
-                }
+                    linkedHashMap.put(subj.name(), linkedHashMap.getOrDefault(
+                            subj.name(), 0) + subj.score());
             }
         }
         for (String name : linkedHashMap.keySet()) {
