@@ -3,6 +3,8 @@ package ru.job4j.tracker;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 class ItemAscByNameTest {
     @Test
@@ -10,14 +12,8 @@ class ItemAscByNameTest {
         Item test = new Item("test");
         Item first = new Item("first");
         Item perviy = new Item("perviy");
-        ArrayList<Item> items = new ArrayList<>();
-        ArrayList<Item> expected = new ArrayList<>();
-        items.add(test);
-        items.add(first);
-        items.add(perviy);
-        expected.add(first);
-        expected.add(perviy);
-        expected.add(test);
+        List<Item> items = Arrays.asList(test, first, perviy);
+        List<Item> expected = Arrays.asList(first, perviy, test);
         items.sort(new ItemAscByName());
         Assertions.assertThat(items).isEqualTo(expected);
     }
@@ -27,14 +23,8 @@ class ItemAscByNameTest {
         Item test = new Item("test");
         Item first = new Item("first");
         Item perviy = new Item("perviy");
-        ArrayList<Item> items = new ArrayList<>();
-        ArrayList<Item> expected = new ArrayList<>();
-        items.add(test);
-        items.add(first);
-        items.add(perviy);
-        expected.add(test);
-        expected.add(perviy);
-        expected.add(first);
+        List<Item> items = Arrays.asList(test, first, perviy);
+        List<Item> expected = Arrays.asList(test, perviy, first);
         items.sort(new ItemDescByName());
         Assertions.assertThat(items).isEqualTo(expected);
     }
