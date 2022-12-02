@@ -17,6 +17,7 @@ public class PriorityQueue {
      * они распределяются по принципу FIFO.
      * @param task задача которая добавляется в очередь
      */
+
     public void put(Task task) {
         int index = 0;
         for (Task element : tasks) {
