@@ -3,7 +3,7 @@ package ru.job4j.search;
 import java.util.ArrayList;
 import java.util.function.Predicate;
 
-public class PhoneDictionary {
+public class PhoneDictionary {аааа
     private ArrayList<Person> persons = new ArrayList<>();
 
     public void add(Person person) {
