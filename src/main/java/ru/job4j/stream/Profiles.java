@@ -16,8 +16,8 @@ public class Profiles {
            return left.getCity().compareTo(right.getCity());
         };
         return profiles.stream()
-                .map(profile -> profile.getAddress())
-                .sorted(comparator)
+                .map(Profile :: getAddress)
+                .sorted(Comparator.comparing(obj -> obj.getCity()))
                 .distinct()
                 .collect(Collectors.toList());
     }
