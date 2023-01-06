@@ -60,7 +60,6 @@ public class BankService {
      * @return пользователь с указанными паспортными данными.
      */
     public User findByPassport(String passport) {
-        //
         return users.keySet()
                 .stream()
                 .filter(s -> s.getPassport().equals(passport))
@@ -78,7 +77,6 @@ public class BankService {
      * @return возвращает счет пользователя, объект класса Account
      */
     public Account findByRequisite(String passport, String requisite) {
-        //
         User user = findByPassport(passport);
         List<Account> userAccount = users.get(user);
         if (userAccount != null) {
