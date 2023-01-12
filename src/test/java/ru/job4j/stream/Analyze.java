@@ -19,7 +19,7 @@ public class Analyze {
         return stream.
                 map(i -> new Tuple(i.name(), i.subjects()
                         .stream()
-                        .mapToInt(j -> j.score())
+                        .mapToInt(Subject::score)
                         .average()
                         .orElse(0)))
                 .collect(Collectors.toList());
@@ -50,7 +50,6 @@ public class Analyze {
     public static Tuple bestSubject(Stream<Pupil> stream) {
         Map<String, Double> var = stream.flatMap(i -> i.subjects().stream())
                 .collect(Collectors.groupingBy(Subject::name,
-                        LinkedHashMap::new,
                         Collectors.summingDouble(Subject::score)));
         return var
                 .entrySet()
