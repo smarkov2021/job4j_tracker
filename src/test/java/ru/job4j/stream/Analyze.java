@@ -10,7 +10,7 @@ import java.util.stream.Stream;
 public class Analyze {
     public static double averageScore(Stream<Pupil> stream) {
         return stream.flatMap(i -> i.subjects().stream())
-                .mapToInt(i -> i.score())
+                .mapToInt(Subject::score)
                 .average()
                 .orElse(0);
     }
@@ -41,7 +41,7 @@ public class Analyze {
         return stream.
                 map(i -> new Tuple(i.name(), i.subjects()
                         .stream()
-                        .mapToInt(j -> j.score())
+                        .mapToInt(Subject::score)
                         .sum()))
                 .max(Comparator.comparing(Tuple::score))
                 .orElse(null);
