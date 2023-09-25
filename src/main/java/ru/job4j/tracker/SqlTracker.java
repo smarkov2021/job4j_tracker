@@ -47,48 +47,59 @@ public class SqlTracker implements Store {
     @Override
     public Item add(Item item) {
         Timestamp timestampFromLDT = Timestamp.valueOf(item.getTime());
-        int lastIndex;
-        try (Statement statement = cn.createStatement()) {
-            ResultSet lf = statement.executeQuery("select max(id) from items");
-            lf.next();
-            lastIndex = lf.getInt(1);
-        try (PreparedStatement ps = cn.prepareStatement("INSERT INTO items(name, created) values (?, ?)")) {
+        try (PreparedStatement ps = cn.prepareStatement("INSERT INTO items(name, created) values (?, ?) ",
+                Statement.RETURN_GENERATED_KEYS)) {
             ps.setString(1, item.getName());
             ps.setTimestamp(2, timestampFromLDT);
             ps.execute();
-        }
+            ResultSet generatedKeys = ps.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                item.setId(generatedKeys.getInt(1));
+            }
             } catch (SQLException e) {
-                throw new RuntimeException(e);
+            e.printStackTrace();
         }
-        item.setId(lastIndex + 1);
         return item;
     }
 
     @Override
     public boolean replace(int id, Item item)  {
         boolean rsl = false;
-        try (PreparedStatement ps = cn.prepareStatement("UPDATE items SET name = ? where id =?")) {
+        try (PreparedStatement ps = cn.prepareStatement("UPDATE items SET name = ?, created = ? where id =? "
+                + " RETURNING (id)")) {
+            LocalDateTime localDateTime = LocalDateTime.now();
+            Timestamp timestampFromLDT = Timestamp.valueOf(localDateTime);
             ps.setString(1, item.getName());
-            ps.setInt(2, id);
-            ps.execute();
-            rsl = true;
+            ps.setTimestamp(2, timestampFromLDT);
+            ps.setInt(3, id);
+            ResultSet res = ps.executeQuery();
+            if (res.next()) {
+                rsl = !res.next();
+            }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
         return rsl;
     }
 
     @Override
-    public boolean delete(int id) {
+    public void delete(int id) {
         boolean rsl = false;
         try (PreparedStatement ps = cn.prepareStatement("delete from items where id =?")) {
             ps.setInt(1, id);
             ps.execute();
             rsl = true;
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
-        return rsl;
+    }
+
+    private Item createItem(ResultSet resultSet) throws SQLException {
+        int ide = resultSet.getInt("id");
+        String name = resultSet.getString("name");
+        Timestamp timestamp = resultSet.getTimestamp("created");
+        LocalDateTime localDateTime = timestamp.toLocalDateTime();
+        return new Item(ide, name, localDateTime);
     }
 
     @Override
@@ -97,14 +108,10 @@ public class SqlTracker implements Store {
         try (PreparedStatement ps = cn.prepareStatement("select id, name, created from items")) {
             ResultSet resultSet = ps.executeQuery();
             while (resultSet.next()) {
-                int ide = resultSet.getInt("id");
-                String name = resultSet.getString("name");
-                Timestamp timestamp = resultSet.getTimestamp("created");
-                LocalDateTime localDateTime = timestamp.toLocalDateTime();
-                rsl.add(new Item(ide, name, localDateTime));
+                rsl.add(createItem(resultSet));
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
         return rsl;
     }
@@ -123,7 +130,7 @@ public class SqlTracker implements Store {
                 rsl.add(new Item(ide, name, localDateTime));
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
         return rsl;
     }
@@ -131,7 +138,8 @@ public class SqlTracker implements Store {
     @Override
     public Item findById(int id) {
         Item rsl = null;
-        try (PreparedStatement ps = cn.prepareStatement("select id, name, created from items where id = ? limit 1")) {
+        try (PreparedStatement ps = cn.prepareStatement("select id, name, created from items where id = ? "
+                + "limit 1")) {
             ps.setInt(1, id);
             ResultSet resultSet = ps.executeQuery();
             while (resultSet.next()) {
@@ -142,7 +150,7 @@ public class SqlTracker implements Store {
                 rsl = new Item(ide, name, localDateTime);
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
             }
         return rsl;
         }
