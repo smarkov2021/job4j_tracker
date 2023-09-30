@@ -82,6 +82,20 @@ public class SqlTrackerTest {
     }
 
     @Test
+    public void whenListWithoutDeletedElemIsEqualAllItems() {
+        SqlTracker tracker = new SqlTracker(connection);
+        Item firstItem = new Item("firstItem");
+        Item secondItem = new Item("secondItem");
+        Item thirdItem = new Item("thirdItem");
+        List<Item> items = List.of(firstItem, thirdItem);
+        tracker.add(firstItem);
+        tracker.add(secondItem);
+        tracker.add(thirdItem);
+        tracker.delete(secondItem.getId());
+        assertThat(items.equals(tracker.findAll())).isTrue();
+    }
+
+    @Test
     public void whenFindAllItemsIsEqualList() {
         SqlTracker tracker = new SqlTracker(connection);
         Item firstItem = new Item("firstItem");
