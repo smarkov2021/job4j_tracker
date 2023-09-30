@@ -46,7 +46,7 @@ public class SqlTracker implements Store {
     @Override
     public Item add(Item item) {
         Timestamp timestampFromLDT = Timestamp.valueOf(item.getTime());
-        try (PreparedStatement ps = cn.prepareStatement("INSERT INTO items(name, created) values (?, ?) ",
+        try (PreparedStatement ps = cn.prepareStatement("INSERT INTO items(name, created) values (?, ?) ;",
                 Statement.RETURN_GENERATED_KEYS)) {
             ps.setString(1, item.getName());
             ps.setTimestamp(2, timestampFromLDT);
@@ -64,14 +64,16 @@ public class SqlTracker implements Store {
     @Override
     public boolean replace(int id, Item item)  {
         boolean rsl = false;
-        try (PreparedStatement ps = cn.prepareStatement("UPDATE items SET name = ?, created = ? where id =? "
-                + " RETURNING (id)")) {
+        try (PreparedStatement ps = cn.prepareStatement("UPDATE items SET name = ?, created = ? WHERE id = ?")) {
             LocalDateTime localDateTime = LocalDateTime.now();
             Timestamp timestampFromLDT = Timestamp.valueOf(localDateTime);
             ps.setString(1, item.getName());
             ps.setTimestamp(2, timestampFromLDT);
             ps.setInt(3, id);
-            ResultSet res = ps.executeQuery();
+            ps.executeUpdate();
+            PreparedStatement check = cn.prepareStatement("SELECT id from items WHERE id = ?");
+            check.setInt(1, id);
+            ResultSet res = check.executeQuery();
             if (res.next()) {
                 rsl = !res.next();
             }

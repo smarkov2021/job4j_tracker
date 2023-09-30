@@ -1,11 +1,13 @@
 package ru.job4j.tracker;
 
+import org.junit.Ignore;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import ru.job4j.tracker.Item;
 import ru.job4j.tracker.SqlTracker;
+
 
 import java.io.InputStream;
 import java.sql.Connection;
@@ -59,4 +61,63 @@ public class SqlTrackerTest {
         assertThat(tracker.findById(item.getId())).isEqualTo(item);
     }
 
+    @Test
+    public void whenReplacedItemAndFindByGeneratedIsEqual() {
+        SqlTracker tracker = new SqlTracker(connection);
+        Item secondItem = new Item("secondItem");
+        Item newItem = new Item("newItem");
+        tracker.add(secondItem);
+        int index = secondItem.getId();
+        tracker.replace(index, newItem);
+        assertThat(tracker.findById(index).getName()).isEqualTo("newItem");
+    }
+
+    @Test
+    public void whenDeletedItemIsNotExist() {
+        SqlTracker tracker = new SqlTracker(connection);
+        Item thirdItem = new Item("thirdItem");
+        tracker.add(thirdItem);
+        tracker.delete(thirdItem.getId());
+        assertThat(tracker.findById(thirdItem.getId())).isNull();
+    }
+
+    @Test
+    public void whenFindAllItemsIsEqualList() {
+        SqlTracker tracker = new SqlTracker(connection);
+        Item firstItem = new Item("firstItem");
+        Item secondItem = new Item("secondItem");
+        Item thirdItem = new Item("thirdItem");
+        List<Item> items = List.of(firstItem, secondItem, thirdItem);
+        tracker.add(firstItem);
+        tracker.add(secondItem);
+        tracker.add(thirdItem);
+        assertThat(items.equals(tracker.findAll())).isTrue();
+    }
+
+    @Test
+    public void whenFindAllItemsIsNotEqualList() {
+        SqlTracker tracker = new SqlTracker(connection);
+        Item firstItem = new Item("firstItem");
+        Item secondItem = new Item("secondItem");
+        Item thirdItem = new Item("thirdItem");
+        List<Item> items = List.of(firstItem, secondItem, thirdItem);
+        tracker.add(firstItem);
+        tracker.add(secondItem);
+        assertThat(items.equals(tracker.findAll())).isFalse();
+    }
+
+    @Test
+    public void whenFindItemsByNameIsEqualList() {
+        SqlTracker tracker = new SqlTracker(connection);
+        Item firstItem = new Item("firstItem");
+        Item secondItem = new Item("secondItem");
+        Item thirdItem = new Item("thirdItem");
+        Item fourthItem = new Item("secondItem");
+        List<Item> items = List.of(secondItem, fourthItem);
+        tracker.add(firstItem);
+        tracker.add(secondItem);
+        tracker.add(thirdItem);
+        tracker.add(fourthItem);
+        assertThat(items.equals(tracker.findByName("secondItem"))).isTrue();
+    }
 }
